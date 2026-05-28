@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VINCLUM - 咲くやこの花高校 演劇科 17期生 卒業公演</title>
+    <!-- Google Fonts: 劇的なセリフ体と、美しい和文フォントをインポート -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+JP:wght@300;600;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <!-- FontAwesome: アイコン用のフォントリンク -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #050505;       /* 漆黒の背景 */
+            --curtain-red: #580c13;   /* 怪しげな深紅 */
+            --accent-gold: #d4af37;   /* 眩いゴールド */
+            --accent-gold-rgb: 212, 175, 55;
+            --text-color: #e5e5e5;    /* 読みやすい薄いグレー */
+            --font-title: 'Cinzel', 'Noto Serif JP', serif;
+            --font-body: 'Noto Serif JP', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 幕が開くまではスクロールを完全に禁止して誤動作を防ぐ */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        
+        body.locked {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        /* ==========================================================================
+           2. オープニング：一方向に極めて滑らかに開く幕（Curtain Animation）
+           ========================================================================== */
+        #opening-curtain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            overflow: hidden;
+            pointer-events: auto;
+            /* 幕が消え去るタイミングをゆっくりなアニメーション(3.8秒)に合わせる */
+            transition: visibility 3.8s;
+        }
+
+        /* 左右に分かれる幕
+          リアルなベルベットの質感を出すために、濃淡のある縦シワのグラデーション（ドレープ）を表現
+        */
+        .curtain-half {
+            width: 50%;
+            height: 100%;
+            background: 
+                linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.7) 100%),
+                repeating-linear-gradient(to right, 
+                    #1c0204 0px, 
+                    #380408 15px, 
+                    #5c080f 30px, 
+                    #7d0c15 45px, 
+                    #5c080f 60px, 
+                    #380408 75px, 
+                    #1c0204 90px
+                );
+            position: absolute;
+            top: 0;
+            /* 最初の3.3秒間は幕が完全に不透明（透けない状態）のまま斜め上へと引き上げられ、
+               最後の0.5秒でサッと綺麗に消えるようになり、裏のコンテンツが透ける現象を防ぎます。
+            */
+            transition: transform 3.8s cubic-bezier(0.76, 0, 0.175, 1), opacity 0.5s 3.3s ease;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+            will-change: transform, opacity;
+            opacity: 1; /* 初期状態は完全不透明 */
+        }
+
+        /* 金色の高級感あるフリンジをカーテン下部に配置 */
+        .curtain-half::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: repeating-linear-gradient(to right, var(--accent-gold) 0px, var(--accent-gold) 4px, #947119 5px, #947119 8px);
+            border-top: 2px solid #fff;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* 左の幕：左上（top left）を起点にして、
+          開くときに横に縮みながら、斜め上に引き上げられるようにする
+        */
+        .curtain-left {
+            left: 0;
+            transform-origin: top left;
+            border-right: 3px solid var(--accent-gold);
+        }
+
+        /* 右の幕：右上（top right）を起点にして、
+          開くときに同様にたくし上げる
+        */
+        .curtain-right {
+            right: 0;
+            transform-origin: top right;
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        /* 幕の中央に輝く「VINCLUM」エンブレム */
+        .curtain-emblem {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 10000;
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            /* エンブレムも最初のうちははっきりと見せ、後半にかけて滑らかに消えていく */
+            transition: opacity 1.5s 0.5s ease, transform 3.2s cubic-bezier(0.76, 0, 0.175, 1);
+            will-change: opacity, transform;
+        }
+
+        /* 幕が開いたとき（.openedクラス付与時）の劇的たくし上げエフェクト */
+        #opening-curtain.opened .curtain-left {
+            transform: scaleX(0.12) skewY(15deg) translateX(-35%) translateY(-15%);
+            opacity: 0;
+        }
+
+        #opening-curtain.opened .curtain-right {
+            transform: scaleX(0.12) skewY(-15deg) translateX(35%) translateY(-15%);
+            opacity: 0;
+        }
+
+        #opening-curtain.opened .curtain-emblem {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.75);
+        }
+
+        /* サーカスの紋章をイメージした装飾枠 */
+        .emblem-border {
+            border: 3px double var(--accent-gold);
+            padding: 50px 20px;
+            background: rgba(13, 1, 3, 0.95);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(var(--accent-gold-rgb), 0.3);
+        }
+
+        .emblem-border h2 {
+            font-family: var(--font-title);
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.3em;
+            margin-bottom: 0;
+            padding-left: 0.3em;
+            text-shadow: 0 0 10px rgba(var(--accent-gold-rgb), 0.5);
+        }
+
+        /* ==========================================================================
+           3. ヘッダー＆ハンバーガーメニュー
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: var(--font-title);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: 0.15em;
+        }
+
+        /* ハンバーガーアイコン */
+        .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            z-index: 1002;
+        }
+
+        .menu-bar {
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-gold);
+            transition: all 0.4s ease;
+        }
+
+        /* 開いたときのアニメーション */
+        .menu-toggle.active .bar1 {
+            transform: translateY(12px) rotate(45deg);
+        }
+        .menu-toggle.active .bar2 {
+            opacity: 0;
+        }
+        .menu-toggle.active .bar3 {
+            transform: translateY(-12px) rotate(-45deg);
+        }
+
+        /* フルスクリーンメニュー */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(13, 1, 3, 0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            border-left: 2px solid var(--accent-gold);
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-list {
+            list-style: none;
+            text-align: center;
+        }
+
+        .nav-item {
+            margin: 25px 0;
+        }
+
+        .nav-link {
+            font-size: 2rem;
+            font-family: var(--font-title);
+            color: #fff;
+            letter-spacing: 0.1em;
+            position: relative;
+            padding: 5px 20px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-gold);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* ==========================================================================
+           4. メインコンテンツ（ヒーローエリア、あらすじなど）
+           ========================================================================== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+            background: radial-gradient(circle at center, rgba(96, 11, 20, 0.15) 0%, rgba(0,0,0,0.9) 80%);
+            overflow: hidden; /* 横から出てくるときのはみ出しを防ぐ */
+        }
+
+        /* 背景にうっすらと浮かぶサーカステントのグラフィック */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/1421297657544576581_1');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.12;
+            z-index: -1;
+        }
+
+        /* 
+           ★劇的な時間差フェードイン＆スライドイン演出★
+           幕が開いた瞬間に発動するクラスを追加。初期状態はすべて非表示（opacity: 0）にします。
+        */
+        .hero h3 {
+            font-size: 1.2rem;
+            letter-spacing: 0.4em;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            
+            /* 初期状態：下にズレて透明 */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s ease;
+            will-change: transform, opacity;
+        }
+
+        /* ★中のVINCLUMロゴ：一文字ずつ（span）制御するためのスタイル */
+        .hero h1 {
+            font-family: var(--font-title);
+            font-size: 5.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: center;
+            gap: 0.1em; /* 文字同士の間隔 */
+        }
+
+        /* 初期状態：画面上の枠外に配置し、透明にしておく */
+        .hero h1 span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(-120px);
+            /* cubic-bezier(0.175, 0.885, 0.32, 1.2) を使って、着地時に少し「ぷるん」と弾むように設定 */
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 1.2s ease;
+            will-change: transform, opacity;
+        }
+
+        .hero p.catchphrase {
+            font-size: 1.1rem;
+            letter-spacing: 0.2em;
+            color: #bbb;
+            margin-bottom: 40px;
+            
+            /* 初期状態：下にズレて透明 */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s ease;
+            will-change: transform, opacity;
+        }
+
+        .hero .play-date {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+            border-top: 1px solid rgba(var(--accent-gold-rgb), 0.3);
+            border-bottom: 1px solid rgba(var(--accent-gold-rgb), 0.3);
+            padding: 10px 40px;
+            color: var(--accent-gold);
+            
+            /* 初期状態：下にズレて透明 */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s ease;
+            will-change: transform, opacity;
+        }
+
+        /* ==========================================================================
+           カーテンが開いた時（bodyに.curtain-openedが付与された時）に
+           順番に時間差（transition-delay）で表示させる
+           ========================================================================== */
+        /* 1. まずサブタイトルがふわっと浮かび上がる (0.8秒遅れ) */
+        body.curtain-opened .hero h3 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.8s;
+        }
+
+        /* ★一文字ずつの落下ディレイ設定 (1.1秒から0.1秒刻みで次々に落下) */
+        body.curtain-opened .hero h1 span {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        body.curtain-opened .hero h1 span:nth-child(1) { transition-delay: 1.1s; } /* V */
+        body.curtain-opened .hero h1 span:nth-child(2) { transition-delay: 1.2s; } /* I */
+        body.curtain-opened .hero h1 span:nth-child(3) { transition-delay: 1.3s; } /* N */
+        body.curtain-opened .hero h1 span:nth-child(4) { transition-delay: 1.4s; } /* C */
+        body.curtain-opened .hero h1 span:nth-child(5) { transition-delay: 1.5s; } /* L */
+        body.curtain-opened .hero h1 span:nth-child(6) { transition-delay: 1.6s; } /* U */
+        body.curtain-opened .hero h1 span:nth-child(7) { transition-delay: 1.7s; } /* M */
+
+        /* 3. キャッチコピーが下からスッと出現 (1.9秒遅れ、文字が全て揃った後に登場) */
+        body.curtain-opened .hero p.catchphrase {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 1.9s;
+        }
+
+        /* 4. 最後に公演日時が綺麗に現れる (2.1秒遅れ) */
+        body.curtain-opened .hero .play-date {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 2.1s;
+        }
+
+        /* 各セクション共通 */
+        section {
+            padding: 120px 10%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 2.8rem;
+            text-align: center;
+            color: var(--accent-gold);
+            margin-bottom: 60px;
+            letter-spacing: 0.15em;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '❖';
+            display: block;
+            font-size: 1rem;
+            color: var(--curtain-red);
+            margin-top: 10px;
+        }
+
+        /* あらすじ（Synopsis）セクション */
+        .synopsis-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .synopsis-quote {
+            font-family: 'Playfair Display', 'Noto Serif JP', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: #fff;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 30px;
+            line-height: 1.6;
+        }
+
+        .synopsis-text p {
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            color: #ccc;
+        }
+
+        /* ==========================================================================
+           5. キャスト紹介セクション（タイポグラフィ重視・ホバーエフェクト）
+           ========================================================================== */
+        .cast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .cast-item {
+            background: linear-gradient(135deg, #0d0d0d 0%, #151515 100%);
+            border: 1px solid rgba(var(--accent-gold-rgb), 0.15);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .cast-item::before {
+            content: '🎪';
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            font-size: 5rem;
+            opacity: 0.05;
+            transition: transform 0.6s ease;
+        }
+
+        .cast-item:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(var(--accent-gold-rgb), 0.15);
+        }
+
+        .cast-item:hover::before {
+            transform: scale(1.2) rotate(-15deg);
+        }
+
+        .role-name {
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .actor-name {
+            font-size: 1.5rem;
+            font-family: var(--font-title);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #fff;
+            transition: text-shadow 0.3s;
+        }
+
+        .cast-item:hover .actor-name {
+            text-shadow: 0 0 10px rgba(var(--accent-gold-rgb), 0.8);
+        }
+
+        /* ==========================================================================
+           6. 公演情報（Info & Access）セクション
+           ========================================================================== */
+        .info-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+        }
+
+        .info-details {
+            background-color: #0c0203;
+            border: 1px solid var(--curtain-red);
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info-table th, .info-table td {
+            padding: 20px 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-table th {
+            color: var(--accent-gold);
+            font-weight: 600;
+            width: 30%;
+            vertical-align: top;
+        }
+
+        .venue-info h3 {
+            font-family: var(--font-title);
+            color: #fff;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .venue-info p {
+            color: #aaa;
+            margin-bottom: 25px;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('http://googleusercontent.com/image_collection/image_retrieval/1421297657544576581_0');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .map-placeholder i {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        /* ==========================================================================
+           7. フッター
+           ========================================================================== */
+        footer {
+            background-color: #030303;
+            border-top: 1px solid rgba(var(--accent-gold-rgb), 0.1);
+            padding: 60px 20px 30px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-title);
+            color: var(--accent-gold);
+            font-size: 2.5rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 10px;
+        }
+
+        .footer-credit {
+            color: #777;
+            font-size: 0.85rem;
+            margin-top: 30px;
+        }
+
+        /* ==========================================================================
+           8. レスポンシブ対応（スマホ対応）
+           ========================================================================== */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            /* スマホ時の落下高さ調節（画面からはみ出さないように） */
+            .hero h1 span {
+                transform: translateY(-60px);
+            }
+            body.curtain-opened .hero h1 span {
+                transform: translateY(0);
+            }
+            .hero .play-date {
+                font-size: 1.3rem;
+                padding: 10px 20px;
+            }
+            .synopsis-container, .info-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .synopsis-quote {
+                font-size: 1.4rem;
+                padding-left: 20px;
+            }
+            section {
+                padding: 80px 5%;
+            }
+            .emblem-border h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body class="locked">
+
+    <!-- ==========================================================================
+       オープニング：幕が開くギミック
+       ========================================================================== -->
+    <div id="opening-curtain">
+        <div class="curtain-half curtain-left"></div>
+        <div class="curtain-half curtain-right"></div>
+        
+        <div class="curtain-emblem" id="emblem-container">
+            <div class="emblem-border">
+                <h2>VINCLUM</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       ヘッダー＆カスタムナビゲーション
+       ========================================================================== -->
+    <header>
+        <div class="logo">VINCLUM</div>
+        <button class="menu-toggle" id="menu-toggle-btn" aria-label="メニューを開く">
+            <span class="menu-bar bar1"></span>
+            <span class="menu-bar bar2"></span>
+            <span class="menu-bar bar3"></span>
+        </button>
+    </header>
+
+    <nav class="nav-menu" id="nav-menu-container">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#hero" class="nav-link" onclick="closeMenu()">Top</a></li>
+            <li class="nav-item"><a href="#synopsis" class="nav-link" onclick="closeMenu()">Synopsis</a></li>
+            <li class="nav-item"><a href="#cast" class="nav-link" onclick="closeMenu()">Cast</a></li>
+            <li class="nav-item"><a href="#info" class="nav-link" onclick="closeMenu()">Info</a></li>
+        </ul>
+    </nav>
+
+    <!-- ==========================================================================
+       メインサイトコンテンツ
+       ========================================================================== -->
+    <main>
+        
+        <!-- ヒーローエリア -->
+        <section id="hero" class="hero">
+            <div class="hero-bg"></div>
+            <h3>Graduation Performance</h3>
+            <!-- ★一文字ずつspanで分割して配置します★ -->
+            <h1>
+                <span>V</span><span>I</span><span>N</span><span>C</span><span>L</span><span>U</span><span>M</span>
+            </h1>
+            <p class="catchphrase">咲くやこの花高校 演劇科 17期生 卒業公演</p>
+            <div class="play-date">2026.06.20 - 06.21</div>
+        </section>
+
+        <!-- あらすじ（Synopsis） -->
+        <section id="synopsis">
+            <h2 class="section-title">Synopsis</h2>
+            <div class="synopsis-container">
+                <div class="synopsis-quote">
+                    「ようこそ、誰も見たことのない奇妙な夜会へ。」
+                </div>
+                <div class="synopsis-text">
+                    <p>ここに公演のあらすじテキストが入ります。どのようなサーカスが舞台となるのか、物語の導入部分を怪しく魅力的な文章で書き記しましょう。</p>
+                    <p>例えば、「足を踏み入れたら最後、二度と戻ることはできないと言われる真夜中のサーカス『VINCLUM』。そこに迷い込んだ一人の少女と、サーカス団員たちが織りなす禁断の物語――。」といった、期待感を高める文章がおすすめです。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- キャスト紹介（Cast） -->
+        <section id="cast">
+            <h2 class="section-title">Cast</h2>
+            <div class="cast-grid">
+                
+                <!-- キャスト1 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 01 / Role</div>
+                    <div class="actor-name">キャスト名 01</div>
+                </div>
+
+                <!-- キャスト2 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 02 / Role</div>
+                    <div class="actor-name">キャスト名 02</div>
+                </div>
+
+                <!-- キャスト3 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 03 / Role</div>
+                    <div class="actor-name">キャスト名 03</div>
+                </div>
+
+                <!-- キャスト4 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 04 / Role</div>
+                    <div class="actor-name">キャスト名 04</div>
+                </div>
+
+                <!-- キャスト5 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 05 / Role</div>
+                    <div class="actor-name">キャスト名 05</div>
+                </div>
+
+                <!-- キャスト6 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 06 / Role</div>
+                    <div class="actor-name">キャスト名 06</div>
+                </div>
+
+                <!-- キャスト7 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 07 / Role</div>
+                    <div class="actor-name">キャスト名 07</div>
+                </div>
+
+                <!-- キャスト8 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 08 / Role</div>
+                    <div class="actor-name">キャスト名 08</div>
+                </div>
+
+                <!-- キャスト9 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 09 / Role</div>
+                    <div class="actor-name">キャスト名 09</div>
+                </div>
+
+                <!-- キャスト10 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 10 / Role</div>
+                    <div class="actor-name">キャスト名 10</div>
+                </div>
+
+                <!-- キャスト11 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 11 / Role</div>
+                    <div class="actor-name">キャスト名 11</div>
+                </div>
+
+                <!-- キャスト12 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 12 / Role</div>
+                    <div class="actor-name">キャスト名 12</div>
+                </div>
+
+                <!-- キャスト13 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 13 / Role</div>
+                    <div class="actor-name">キャスト名 13</div>
+                </div>
+
+                <!-- キャスト14 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 14 / Role</div>
+                    <div class="actor-name">キャスト名 14</div>
+                </div>
+
+                <!-- キャスト15 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 15 / Role</div>
+                    <div class="actor-name">キャスト名 15</div>
+                </div>
+
+                <!-- キャスト16 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 16 / Role</div>
+                    <div class="actor-name">キャスト名 16</div>
+                </div>
+
+                <!-- キャスト17 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 17 / Role</div>
+                    <div class="actor-name">キャスト名 17</div>
+                </div>
+
+                <!-- キャスト18 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 18 / Role</div>
+                    <div class="actor-name">キャスト名 18</div>
+                </div>
+
+                <!-- キャスト19 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 19 / Role</div>
+                    <div class="actor-name">キャスト名 19</div>
+                </div>
+
+                <!-- キャスト20 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 20 / Role</div>
+                    <div class="actor-name">キャスト名 20</div>
+                </div>
+
+                <!-- キャスト21 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 21 / Role</div>
+                    <div class="actor-name">キャスト名 21</div>
+                </div>
+
+                <!-- キャスト22 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 22 / Role</div>
+                    <div class="actor-name">キャスト名 22</div>
+                </div>
+
+                <!-- キャスト23 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 23 / Role</div>
+                    <div class="actor-name">キャスト名 23</div>
+                </div>
+
+                <!-- キャスト24 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 24 / Role</div>
+                    <div class="actor-name">キャスト名 24</div>
+                </div>
+
+                <!-- キャスト25 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 25 / Role</div>
+                    <div class="actor-name">キャスト名 25</div>
+                </div>
+
+                <!-- キャスト26 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 26 / Role</div>
+                    <div class="actor-name">キャスト名 26</div>
+                </div>
+
+                <!-- キャスト27 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 27 / Role</div>
+                    <div class="actor-name">キャスト名 27</div>
+                </div>
+
+                <!-- キャスト28 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 28 / Role</div>
+                    <div class="actor-name">キャスト名 28</div>
+                </div>
+
+                <!-- キャスト29 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 29 / Role</div>
+                    <div class="actor-name">キャスト名 29</div>
+                </div>
+
+                <!-- キャスト30 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 30 / Role</div>
+                    <div class="actor-name">キャスト名 30</div>
+                </div>
+
+                <!-- キャスト31 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 31 / Role</div>
+                    <div class="actor-name">キャスト名 31</div>
+                </div>
+
+                <!-- キャスト32 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 32 / Role</div>
+                    <div class="actor-name">キャスト名 32</div>
+                </div>
+
+                <!-- キャスト33 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 33 / Role</div>
+                    <div class="actor-name">キャスト名 33</div>
+                </div>
+
+                <!-- キャスト34 -->
+                <div class="cast-item">
+                    <div class="role-name">Cast 34 / Role</div>
+                    <div class="actor-name">キャスト名 34</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 公演情報（Info & Access） -->
+        <section id="info">
+            <h2 class="section-title">Information</h2>
+            <div class="info-layout">
+                
+                <!-- 基本情報 -->
+                <div class="info-details">
+                    <table class="info-table">
+                        <tr>
+                            <th>公演日</th>
+                            <td>
+                                2026年 6月20日（土）<br>
+                                2026年 6月21日（日）<br>
+                                <span style="font-size: 0.85rem; color: #aaa;">※開演時間は決まり次第、こちらに更新します。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>場所</th>
+                            <td>咲くやこの花高等学校 1階<br>テアトルチャイカ</td>
+                        </tr>
+                        <tr>
+                            <th>料金</th>
+                            <td>入場無料（要予約）</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 会場案内・アクセス -->
+                <div class="venue-info">
+                    <h3>テアトルチャイカ</h3>
+                    <p>校内1階にある、演劇科の本格的な発表用ステージです。非日常的な空間で、私たちの3年間の集大成をお楽しみください。</p>
+                    
+                    <!-- マップエリア -->
+                    <div class="map-placeholder">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <p style="font-weight: bold; color: #fff; font-size: 1.1rem; margin-bottom: 5px;">咲くやこの花高等学校 内</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">〒554-0012 大阪市此花区西九条6丁目1番44号</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+       フッター
+       ========================================================================== -->
+    <footer>
+        <div class="footer-logo">VINCLUM</div>
+        <p>咲くやこの花高校 演劇科 17期生 卒業公演</p>
+        <div class="footer-credit">
+            &copy; 2026 Sakuya Konohana High School Drama Dept. 17th. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+       JavaScript制御：一回限りの超スムーズカーテン開閉 ＆ ハンバーガーメニュー
+       ========================================================================== -->
+    <script>
+        // ページ読み込み時に最上部に強制スクロール
+        window.addEventListener('DOMContentLoaded', () => {
+            window.scrollTo(0, 0);
+        });
+
+        // ==========================================
+        // 1. スムーズな幕開き制御（1回限りのイベント駆動）
+        // ==========================================
+        const curtain = document.getElementById('opening-curtain');
+        let isCurtainOpened = false;
+
+        function triggerOpenCurtain() {
+            if (isCurtainOpened) return; // すでに開いていたら何もしない
+            isCurtainOpened = true;
+
+            // 1. 幕開き用のクラスを追加（CSS transitionが起動し、極めて滑らかに開く）
+            curtain.classList.add('opened');
+
+            // 2. 本文スクロールロックを解除し、時間差文字アニメーション用のクラスをbodyに追加
+            document.body.classList.remove('locked');
+            document.body.classList.add('curtain-opened');
+
+            // 3. アニメーション完了後（3.8秒後）、要素を完全に非表示にして操作の邪魔を防ぐ
+            setTimeout(() => {
+                curtain.style.display = 'none';
+            }, 3800);
+        }
+
+        // さまざまな操作入力を検知して幕を開ける
+        window.addEventListener('wheel', triggerOpenCurtain, { passive: true });
+        window.addEventListener('touchmove', triggerOpenCurtain, { passive: true });
+        window.addEventListener('click', triggerOpenCurtain);
+        window.addEventListener('keydown', (e) => {
+            if (['ArrowDown', 'ArrowUp', 'Space', ' ', 'PageDown', 'PageUp'].includes(e.key)) {
+                triggerOpenCurtain();
+            }
+        });
+
+
+        // ==========================================
+        // 2. ハンバーガーメニューの開閉制御
+        // ==========================================
+        const menuToggle = document.getElementById('menu-toggle-btn');
+        const navMenu = document.getElementById('nav-menu-container');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        function closeMenu() {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
