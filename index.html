@@ -599,26 +599,19 @@
             margin-bottom: 25px;
         }
 
-        .map-placeholder {
+        .map-container {
             width: 100%;
             height: 250px;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('http://googleusercontent.com/image_collection/image_retrieval/1421297657544576581_0');
-            background-size: cover;
-            background-position: center;
             border: 1px solid var(--accent-gold);
             border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
-        .map-placeholder i {
-            font-size: 2.5rem;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         /* ==========================================================================
@@ -780,7 +773,7 @@
                 <!-- キャスト4 -->
                 <div class="cast-item">
                     <div class="role-name">ムジカ / 音楽家</div>
-                    <div class="actor-name">曾我　響</div>
+                    <div class="actor-name">曽我　響</div>
                 </div>
 
                 <!-- キャスト5 -->
@@ -803,7 +796,7 @@
 
                 <!-- キャスト8 -->
                 <div class="cast-item">
-                    <div class="role-name">アビッツ / 舞台武術</div>
+                    <div class="role-name">アビッツ / 舞台美術</div>
                     <div class="actor-name">松下　華子</div>
                 </div>
 
@@ -897,7 +890,7 @@
                     <div class="actor-name">南　翼</div>
                 </div>
             </div>
-                <h1 class="cast-title"><br>Rever Circus＜レブールサーカス＞</h1>
+                <h1 class="cast-title"><br>Rever Circus＜レヴールサーカス＞</h1>
             <div class="cast-grid">
 
 
@@ -981,8 +974,8 @@
                         <tr>
                             <th>公演日</th>
                             <td>
-                                2026年 6月20日（土）<br>１４時３０分開演<br>
-                                2026年 6月21日（日）<br>１１時開演<br>
+                                2026年 6月20日（土）<br>　１４時３０分開演<br>
+                                2026年 6月21日（日）<br>　　１１時開演<br>
                             </td>
                         </tr>
                         <tr>
@@ -1002,10 +995,8 @@
                     <p>校内1階にある、演劇科の本格的な発表用ステージです。非日常的な空間で、私たちの3年間の集大成をお楽しみください。</p>
                     
                     <!-- マップエリア -->
-                    <div class="map-placeholder">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <p style="font-weight: bold; color: #fff; font-size: 1.1rem; margin-bottom: 5px;">咲くやこの花高等学校 内</p>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;">〒554-0012 大阪市此花区西九条6丁目1番44号</p>
+                     <div class="map-container">
+                         <iframe src="https://maps.google.com/maps?output=embed&q=大阪府立咲くやこの花高等学校&z=17" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
 
