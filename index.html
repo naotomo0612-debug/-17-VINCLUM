@@ -52,6 +52,12 @@
             transition: color 0.3s ease;
         }
 
+        /* 「曾」の字形を確実に画像と同じ「上もソ、下もソ（台湾標準楷書）」の美しさでレンダリングする裏技指定 */
+        .taiwan-kanji {
+            font-family: "BiauKai", "DFKai-SB", "Microsoft JhengHei", "Noto Serif JP", serif;
+            font-weight: 700;
+        }
+
         /* ==========================================================================
            2. オープニング：一方向に極めて滑らかに開く幕（Curtain Animation）
            ========================================================================== */
@@ -304,34 +310,33 @@
             text-align: center;
             position: relative;
             padding: 20px;
-            background: radial-gradient(circle at center, rgba(96, 11, 20, 0.15) 0%, rgba(0,0,0,0.9) 80%);
+            background: radial-gradient(circle at center, rgba(96, 11, 20, 0.15) 0%, rgba(0,0,0,0.95) 80%);
             overflow: hidden; /* 横から出てくるときのはみ出しを防ぐ */
         }
 
-        /* 背景にうっすらと浮かぶサーカステントのグラフィック */
+        /* 背景：舞台写真（image.png） */
         .hero-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('http://googleusercontent.com/image_collection/image_retrieval/1421297657544576581_1');
+            background-image: url('image.png');
             background-size: cover;
-            background-position: center;
-            opacity: 0.12;
+            background-position: center 30%;
+            opacity: 0.35;
             z-index: -1;
+            filter: grayscale(15%) contrast(110%);
         }
 
-        /* 
-           ★劇的な時間差フェードイン＆スライドイン演出★
-           幕が開いた瞬間に発動するクラスを追加。初期状態はすべて非表示（opacity: 0）にします。
-        */
+        /* 「Graduation Performance」：白色（#fff） */
         .hero h3 {
             font-size: 1.2rem;
             letter-spacing: 0.4em;
-            color: var(--accent-gold);
+            color: #ffffff;
             margin-bottom: 20px;
             text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
             
             /* 初期状態：下にズレて透明 */
             opacity: 0;
@@ -340,24 +345,25 @@
             will-change: transform, opacity;
         }
 
-        /* ★中のVINCLUMロゴ：一文字ずつ（span）制御するためのスタイル */
+        /* 中のVINCLUMロゴ */
         .hero h1 {
             font-family: var(--font-title);
             font-size: 5.5rem;
             font-weight: 900;
             margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.1);
             display: flex;
             justify-content: center;
             gap: 0.1em; /* 文字同士の間隔 */
         }
 
-        /* 初期状態：画面上の枠外に配置し、透明にしておく */
+        /* 「VINCLUM」の各文字（span）：金色（var(--accent-gold)） */
         .hero h1 span {
             display: inline-block;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px rgba(var(--accent-gold-rgb), 0.8), 0 4px 10px rgba(0, 0, 0, 0.9);
             opacity: 0;
             transform: translateY(-120px);
-            /* cubic-bezier(0.175, 0.885, 0.32, 1.2) を使って、着地時に少し「ぷるん」と弾むように設定 */
+            /* 着地時に少し「ぷるん」と弾む設定 */
             transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 1.2s ease;
             will-change: transform, opacity;
         }
@@ -365,8 +371,9 @@
         .hero p.catchphrase {
             font-size: 1.1rem;
             letter-spacing: 0.2em;
-            color: #bbb;
+            color: #e0e0e0;
             margin-bottom: 40px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
             
             /* 初期状態：下にズレて透明 */
             opacity: 0;
@@ -379,10 +386,13 @@
             font-family: var(--font-title);
             font-size: 1.8rem;
             letter-spacing: 0.1em;
-            border-top: 1px solid rgba(var(--accent-gold-rgb), 0.3);
-            border-bottom: 1px solid rgba(var(--accent-gold-rgb), 0.3);
+            border-top: 1px solid rgba(var(--accent-gold-rgb), 0.4);
+            border-bottom: 1px solid rgba(var(--accent-gold-rgb), 0.4);
             padding: 10px 40px;
             color: var(--accent-gold);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
             
             /* 初期状態：下にズレて透明 */
             opacity: 0;
@@ -392,37 +402,33 @@
         }
 
         /* ==========================================================================
-           カーテンが開いた時（bodyに.curtain-openedが付与された時）に
-           順番に時間差（transition-delay）で表示させる
+           カーテンが開いた時（bodyに.curtain-openedが付与された時）
            ========================================================================== */
-        /* 1. まずサブタイトルがふわっと浮かび上がる (0.8秒遅れ) */
         body.curtain-opened .hero h3 {
             opacity: 1;
             transform: translateY(0);
             transition-delay: 0.8s;
         }
 
-        /* ★一文字ずつの落下ディレイ設定 (1.1秒から0.1秒刻みで次々に落下) */
+        /* 一文字ずつの落下ディレイ設定 */
         body.curtain-opened .hero h1 span {
             opacity: 1;
             transform: translateY(0);
         }
-        body.curtain-opened .hero h1 span:nth-child(1) { transition-delay: 1.1s; } /* V */
-        body.curtain-opened .hero h1 span:nth-child(2) { transition-delay: 1.2s; } /* I */
-        body.curtain-opened .hero h1 span:nth-child(3) { transition-delay: 1.3s; } /* N */
-        body.curtain-opened .hero h1 span:nth-child(4) { transition-delay: 1.4s; } /* C */
-        body.curtain-opened .hero h1 span:nth-child(5) { transition-delay: 1.5s; } /* L */
-        body.curtain-opened .hero h1 span:nth-child(6) { transition-delay: 1.6s; } /* U */
-        body.curtain-opened .hero h1 span:nth-child(7) { transition-delay: 1.7s; } /* M */
+        body.curtain-opened .hero h1 span:nth-child(1) { transition-delay: 1.1s; }
+        body.curtain-opened .hero h1 span:nth-child(2) { transition-delay: 1.2s; }
+        body.curtain-opened .hero h1 span:nth-child(3) { transition-delay: 1.3s; }
+        body.curtain-opened .hero h1 span:nth-child(4) { transition-delay: 1.4s; }
+        body.curtain-opened .hero h1 span:nth-child(5) { transition-delay: 1.5s; }
+        body.curtain-opened .hero h1 span:nth-child(6) { transition-delay: 1.6s; }
+        body.curtain-opened .hero h1 span:nth-child(7) { transition-delay: 1.7s; }
 
-        /* 3. キャッチコピーが下からスッと出現 (1.9秒遅れ、文字が全て揃った後に登場) */
         body.curtain-opened .hero p.catchphrase {
             opacity: 1;
             transform: translateY(0);
             transition-delay: 1.9s;
         }
 
-        /* 4. 最後に公演日時が綺麗に現れる (2.1秒遅れ) */
         body.curtain-opened .hero .play-date {
             opacity: 1;
             transform: translateY(0);
@@ -479,78 +485,240 @@
         }
 
         /* ==========================================================================
-           5. キャスト紹介セクション（タイポグラフィ重視・ホバーエフェクト）
+           5. キャスト紹介セクション（名前のみ並べて、押すと写真モーダル出現）
            ========================================================================== */
         .cast-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
             margin-top: 40px;
         }
 
+        /* 名前を押すためのクリックエリア */
         .cast-item {
             background: linear-gradient(135deg, #0d0d0d 0%, #151515 100%);
             border: 1px solid rgba(var(--accent-gold-rgb), 0.15);
-            padding: 30px;
+            padding: 20px 15px;
             border-radius: 8px;
             text-align: center;
+            cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cast-item::before {
             content: '🎪';
             position: absolute;
-            bottom: -15px;
-            right: -15px;
-            font-size: 5rem;
-            opacity: 0.05;
+            bottom: -5px;
+            right: -5px;
+            font-size: 2.5rem;
+            opacity: 0.03;
             transition: transform 0.6s ease;
         }
 
+        /* ホバーすると金色に怪しく光り、少し浮き上がる */
         .cast-item:hover {
             border-color: var(--accent-gold);
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(var(--accent-gold-rgb), 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(var(--accent-gold-rgb), 0.2);
+            background: linear-gradient(135deg, #1c0204 0%, #151515 100%);
         }
 
         .cast-item:hover::before {
-            transform: scale(1.2) rotate(-15deg);
+            transform: scale(1.2) rotate(-10deg);
+            opacity: 0.08;
         }
 
+        /* 役名 */
         .role-name {
-            font-size: 1rem;
-            letter-spacing: 0.15em;
-            color: var(--accent-gold);
-            margin-bottom: 8px;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            color: rgba(var(--accent-gold-rgb), 0.7);
+            margin-bottom: 4px;
             text-transform: uppercase;
+            font-family: var(--font-title);
         }
 
+        /* 役者名 */
         .actor-name {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-family: var(--font-title);
             font-weight: 700;
-            letter-spacing: 0.1em;
-            color: #fff;
+            letter-spacing: 0.08em;
+            color: #ffffff;
             transition: text-shadow 0.3s;
         }
 
         .cast-item:hover .actor-name {
-            text-shadow: 0 0 10px rgba(var(--accent-gold-rgb), 0.8);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
 
-       .cast-title {
-             text-align: center;
-              white-space: nowrap;
-             font-size: 2rem;
-             margin: 50px 0 20px;
+        .cast-title {
+            text-align: center;
+            white-space: nowrap;
+            font-size: 2rem;
+            margin: 50px 0 20px;
+            color: var(--accent-gold);
+            font-family: var(--font-title);
         }
 
-        @media (max-width: 768px) {
-    .cast-title {
-        font-size: 1.1rem;
-    }
+        /* ==========================================================================
+           モーダル（ポップアップ写真表示ウィンドウ）のスタイル
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); /* 劇場の暗転をイメージした深めの黒 */
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            /* 「ゆっくりと優雅に」表示されるよう、durationを0.85sに設定 */
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* モーダルのコンテンツカード */
+        .modal-card {
+            background: linear-gradient(135deg, #0b0203 0%, #121212 100%);
+            border: 2px solid var(--accent-gold);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            /* 拡大して浮かんでくるスピードも、ゆっくりと優雅なイージングに連動 */
+            transform: scale(0.85) translateY(30px);
+            transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95), 0 0 30px rgba(var(--accent-gold-rgb), 0.3);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        /* 閉じるボタン */
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(var(--accent-gold-rgb), 0.5);
+            color: #fff;
+            font-size: 1.2rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--curtain-red);
+            border-color: var(--accent-gold);
+            transform: rotate(90deg);
+        }
+
+        /* モーダル画像表示エリア */
+        .modal-photo-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 133%; /* 3:4の写真比率 */
+            background-color: #0d0d0d;
+        }
+
+        .modal-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* プレビュー用背景（お送りいただいた最高の舞台写真） */
+        .modal-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('image.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        .modal-placeholder i {
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+        
+        .modal-placeholder span {
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        /* モーダル内テキスト */
+        .modal-info {
+            padding: 25px 20px;
+            text-align: center;
+            background: #0d0d0d;
+            border-top: 1px solid rgba(var(--accent-gold-rgb), 0.2);
+        }
+
+        .modal-role {
+            font-size: 0.95rem;
+            letter-spacing: 0.2em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-family: var(--font-title);
+        }
+
+        .modal-actor {
+            font-size: 1.8rem;
+            font-family: var(--font-title);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #ffffff;
+            margin-bottom: 15px; /* メッセージ欄との間にゆったりとした隙間を設定 */
+        }
+
+        /* 写真の下にメッセージや説明を入力できるスペース */
+        .modal-description {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #bbbbbb; /* やわらかな白色 */
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: 5px;
+            font-family: var(--font-body);
+            text-align: left; /* 長文が読みやすいよう左揃えに */
+            word-wrap: break-word;
         }
 
         /* ==========================================================================
@@ -599,6 +767,7 @@
             margin-bottom: 25px;
         }
 
+        /* Googleマップ用ラッパー */
         .map-container {
             width: 100%;
             height: 250px;
@@ -676,6 +845,33 @@
             .emblem-border h2 {
                 font-size: 2.2rem;
             }
+            .cast-title {
+                font-size: 1.1rem;
+            }
+            .cast-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-top: 25px;
+            }
+            .cast-item {
+                padding: 15px 10px;
+            }
+            .role-name {
+                font-size: 0.7rem;
+            }
+            .actor-name {
+                font-size: 1rem;
+            }
+            .modal-card {
+                max-width: 320px;
+            }
+            .modal-actor {
+                font-size: 1.5rem;
+            }
+            .modal-description {
+                font-size: 0.8rem;
+                padding-top: 10px;
+            }
         }
     </style>
 </head>
@@ -725,11 +921,11 @@
         <section id="hero" class="hero">
             <div class="hero-bg"></div>
             <h3>Graduation Performance</h3>
-            <!-- ★一文字ずつspanで分割して配置します★ -->
+            <!-- 一文字ずつspanで分割して配置します -->
             <h1>
                 <span>V</span><span>I</span><span>N</span><span>C</span><span>L</span><span>U</span><span>M</span>
             </h1>
-            <p class="catchphrase">咲くやこの花高校 演劇科 17期生<br>    卒業公演</p>
+            <p class="catchphrase">咲くやこの花高校 演劇科 17期生<br>卒業公演</p>
             <div class="play-date">2026.06.20 - 06.21</div>
         </section>
 
@@ -753,215 +949,247 @@
             <div class="cast-grid">
                 
                 <!-- キャスト1 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ヌラ.jpg', 'ヌラ / 団長', '牧口　かなで', 'Spes Circusを率いる、圧倒的なカリスマを持つ団長。卒業公演への意気込みコメントがここに入ります。')">
                     <div class="role-name">ヌラ / 団長</div>
                     <div class="actor-name">牧口　かなで</div>
                 </div>
 
                 <!-- キャスト2 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/クラウン.jpg', 'クラウン / ピエロ', '赤木　ゆりみ', '観客を笑顔にする、Spes Circusの愛されピエロ。意気込みコメントがここに入ります。')">
                     <div class="role-name">クラウン / ピエロ</div>
                     <div class="actor-name">赤木　ゆりみ</div>
                 </div>
 
                 <!-- キャスト3 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/プーパ.jpg', 'プーパ / 人形遣い', '影山　苺', '怪しげな人形で観客を魅了する人形遣い。意気込みコメントがここに入ります。')">
                     <div class="role-name">プーパ / 人形遣い</div>
                     <div class="actor-name">影山　苺</div>
                 </div>
 
                 <!-- キャスト4 -->
-                <div class="cast-item">
+                <!-- 「曾我 響」さんの「曾」を美しい独自の異体字に強制するためのspan指定 -->
+                <div class="cast-item" onclick="openCastModal('写真/ムジカ.jpg', 'ムジカ / 音楽家', '曾我　響', 'サーカスの空間を怪しく美しく染め上げる音楽家。意気込みコメントがここに入ります。')">
                     <div class="role-name">ムジカ / 音楽家</div>
-                    <div class="actor-name">曽我　響</div>
+                    <div class="actor-name"><span class="taiwan-kanji">曾</span>我　響</div>
                 </div>
 
                 <!-- キャスト5 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/アルビデル.jpg', 'アルビテル / 支配人', '土田　梨華', 'サーカスの夜会を裏でコントロールする謎の支配人。意気込みコメントがここに入ります。')">
                     <div class="role-name">アルビテル / 支配人</div>
                     <div class="actor-name">土田　梨華</div>
                 </div>
 
                 <!-- キャスト6 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ゼノ.jpg', 'ゼノ / 演出家', '吉田　鈴琴', 'サーカスの劇的な瞬間を演出し、美しく形作る存在。意気込みコメントがここに入ります。')">
                     <div class="role-name">ゼノ / 演出家</div>
                     <div class="actor-name">吉田　鈴琴</div>
                 </div>
 
                 <!-- キャスト7 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/エニグマ.jpg', 'エニグマ / 舞台監督', '別所　美紀', '舞台裏のすべてを握り、この空間を支える舞台監督。意気込みコメントがここに入ります。')">
                     <div class="role-name">エニグマ / 舞台監督</div>
                     <div class="actor-name">別所　美紀</div>
                 </div>
 
                 <!-- キャスト8 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/アビッツ.jpg', 'アビッツ / 舞台美術', '松下　華子', 'サーカスの妖しくも華やかな美術世界を創り出す。意気込みコメントがここに入ります。')">
                     <div class="role-name">アビッツ / 舞台美術</div>
                     <div class="actor-name">松下　華子</div>
                 </div>
 
                 <!-- キャスト9 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/イグニス.jpg', 'イグニス / 炎使い', '石野　ちゃこ', '暗闇に強烈な炎を灯し、夜会を盛り上げる炎使い。意気込みコメントがここに入ります。')">
                     <div class="role-name">イグニス / 炎使い</div>
                     <div class="actor-name">石野　ちゃこ</div>
                 </div>
 
                 <!-- キャスト10 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/カルミナ.jpg', 'カルミナ / 歌姫', '渡瀨　理愛', 'サーカステントいっぱいに美しい声を響かせる歌姫。意気込みコメントがここに入ります。')">
                     <div class="role-name">カルミナ / 歌姫</div>
                     <div class="actor-name">渡瀨　理愛</div>
                 </div>
 
                 <!-- キャスト11 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ステラ.jpg', 'ステラ / バレエダンサー', '宮本　佳凜', '光の中をしなやかに舞う、Spesの美しいダンサー。意気込みコメントがここに入ります。')">
                     <div class="role-name">ステラ / バレエダンサー</div>
                     <div class="actor-name">宮本　佳凜</div>
                 </div>
 
                 <!-- キャスト12 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ルナ.jpg', 'ルナ / バレエダンサー', '竹田　実央', '月の光に導かれるように、優雅な軌跡を描くダンサー。意気込みコメントがここに入ります。')">
                     <div class="role-name">ルナ / バレエダンサー</div>
                     <div class="actor-name">竹田　実央</div>
                 </div>
 
                 <!-- キャスト13 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ソキウス.jpg', 'ソキウス / 空中ブランコ', '大西　夏希', '高所で観客をハラハラとさせ、大空を飛ぶ空中ブランコ。意気込みコメントがここに入ります。')">
                     <div class="role-name">ソキウス / 空中ブランコ</div>
                     <div class="actor-name">大西　夏希</div>
                 </div>
 
                 <!-- キャスト14 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/イーオン.jpg', 'イーオン / アクロバティック', '城戸﨑　尚智', '重力に逆らうようにダイナミックに跳ねるアクロバット。意気込みコメントがここに入ります。')">
                     <div class="role-name">イーオン / アクロバティック</div>
                     <div class="actor-name">城戸﨑　尚智</div>
                 </div>
 
                 <!-- キャスト15 -->
-                <div class="cast-item">
-                    <div class="role-name">サーナ /　アクロバティック</div>
+                <div class="cast-item" onclick="openCastModal('写真/サーナ.jpg', 'サーナ / アクロバティック', '成川　愛來', 'しなやかな身体表現で観客の視線を釘付けにする。意気込みコメントがここに入ります。')">
+                    <div class="role-name">サーナ / アクロバティック</div>
                     <div class="actor-name">成川　愛來</div>
                 </div>
 
                 <!-- キャスト16 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ファトゥム.jpg', 'ファトゥム / 手品師', '浅田　和奏', '不可能性を現実に変え、夜会に驚きをもたらす手品師。意気込みコメントがここに入ります。')">
                     <div class="role-name">ファトゥム / 手品師</div>
                     <div class="actor-name">浅田　和奏</div>
                 </div>
 
                 <!-- キャスト17 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/テネル.jpg', 'テネル / ジャグラー', '利川　悠衣', '複数の道具を完璧に操る、リズム感あふれるジャグラー。意気込みコメントがここに入ります。')">
                     <div class="role-name">テネル / ジャグラー</div>
                     <div class="actor-name">利川　悠衣</div>
                 </div>
 
                 <!-- キャスト18 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/パッシオ.jpg', 'パッシオ / 猛獣使い', '森本　舞', '猛獣をも手なずけ、強さと美しさを見せる。意気込みコメントがここに入ります。')">
                     <div class="role-name">パッシオ / 猛獣使い</div>
                     <div class="actor-name">森本　舞</div>
                 </div>
 
                 <!-- キャスト19 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ミムス.jpg', 'ミムス / ピエロ', '西村　あずさ', '滑稽な動きの裏に、どこか怪しさを秘めた道化。意気込みコメントがここに入ります。')">
                     <div class="role-name">ミムス / ピエロ</div>
                     <div class="actor-name">西村　あずさ</div>
                 </div>
 
                 <!-- キャスト20 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/ネクサス.jpg', 'ネクサス / パントマイム', '月足　美羽', '言葉を発さず、静寂の中に壁と物語を構築する。意気込みコメントがここに入ります。')">
                     <div class="role-name">ネクサス / パントマイム</div>
                     <div class="actor-name">月足　美羽</div>
                 </div>
 
                 <!-- キャスト21 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/フロース.jpg', 'フロース / ジャグラー', '中耒田　夢花', '花が舞うように鮮やかに技を決めるジャグラー。意気込みコメントがここに入ります。')">
                     <div class="role-name">フロース / ジャグラー</div>
                     <div class="actor-name">中耒田　夢花</div>
                 </div>
 
                 <!-- キャスト22 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/マレ.jpg', 'マレ / トランポリン', '柴坂　香胡', '高く高く跳躍し、大空に新たな軌道を描くトランポリン。意気込みコメントがここに入ります。')">
                     <div class="role-name">マレ / トランポリン</div>
                     <div class="actor-name">柴坂　香胡</div>
                 </div>
 
                 <!-- キャスト23 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('写真/アルカディア.jpg', 'アルカディア / 一輪車乗り', '南　翼', '危ういバランスを美しく保ちながら、一輪車で舞台を駆け抜ける。意気込みコメントがここに入ります。')">
                     <div class="role-name">アルカディア / 一輪車乗り</div>
                     <div class="actor-name">南　翼</div>
                 </div>
+
             </div>
-                <h1 class="cast-title"><br>Rever Circus＜レヴールサーカス＞</h1>
+
+            <h1 class="cast-title"><br>Rever Circus＜レヴールサーカス＞</h1>
             <div class="cast-grid">
 
-
                 <!-- キャスト24 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar24.jpg', 'オリジン / 団長', '桝井　佑人', 'Rever Circusの個性豊かな団員をまとめる熱き若き団長。意気込みコメントがここに入ります。')">
                     <div class="role-name">オリジン / 団長</div>
                     <div class="actor-name">桝井　佑人</div>
                 </div>
 
                 <!-- キャスト25 -->
-                <div class="cast-item">
-                    <div class="role-name">クロノス / 副団長　</div>
+                <div class="cast-item" onclick="openCastModal('avatar25.jpg', 'クロノス / 副団長', '中田　華帆', '時の流れのように正確な指揮で、団を支える副団長。意気込みコメントがここに入ります。')">
+                    <div class="role-name">クロノス / 副団長</div>
                     <div class="actor-name">中田　華帆</div>
                 </div>
 
                 <!-- キャスト26 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar26.jpg', 'オネット / 脱出技師', '井尻　灯李', 'あらゆる束縛を軽やかにすり抜け、観客を沸かせる脱出技師。意気込みコメントがここに入ります。')">
                     <div class="role-name">オネット / 脱出技師</div>
                     <div class="actor-name">井尻　灯李</div>
                 </div>
 
                 <!-- キャスト27 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar27.jpg', 'クロア / バレエダンサー', '穂積　優', '影と光を織り交ぜるように、美しくステップを刻む。意気込みコメントがここに入ります。')">
                     <div class="role-name">クロア / バレエダンサー</div>
                     <div class="actor-name">穂積　優</div>
                 </div>
 
                 <!-- キャスト28 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar28.jpg', 'ノアール / パントマイム', '荒木　明日香', '漆黒の夜のパントマイムで、観客を幻惑の世界へと導く。意気込みコメントがここに入ります。')">
                     <div class="role-name">ノアール / パントマイム</div>
                     <div class="actor-name">荒木　明日香</div>
                 </div>
 
                 <!-- キャスト29 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar29.jpg', 'ラルム / リボンダンス', '佐々木　もえ', 'リボンのなめらかな軌道で、涙のように美しい空間を創る。意気込みコメントがここに入ります。')">
                     <div class="role-name">ラルム / リボンダンス</div>
                     <div class="actor-name">佐々木　もえ</div>
                 </div>
 
                 <!-- キャスト30 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar30.jpg', 'アンジュ / 空中ブランコ', '谷口　愛莉', 'まるで天使が羽ばたくように、優雅に空中を飛ぶ。意気込みコメントがここに入ります。')">
                     <div class="role-name">アンジュ / 空中ブランコ</div>
                     <div class="actor-name">谷口　愛莉</div>
                 </div>
 
                 <!-- キャスト31 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar31.jpg', 'パピヨン / 歌姫', '藤山　月音', '蝶が舞うように可憐で、美しいハイトーンを響かせる歌姫。意気込みコメントがここに入ります。')">
                     <div class="role-name">パピヨン / 歌姫</div>
                     <div class="actor-name">藤山　月音</div>
                 </div>
 
                 <!-- キャスト32 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar32.jpg', 'ロゼ / シャボン玉師', '丹下　るり', 'はかなくも美しいシャボン玉で、幻のような世界を作り上げる。意気込みコメントがここに入ります。')">
                     <div class="role-name">ロゼ / シャボン玉師</div>
                     <div class="actor-name">丹下　るり</div>
                 </div>
 
                 <!-- キャスト33 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar33.jpg', 'セール / アクロバット', '夏山　拓実', '力強さとスピード感にあふれた、迫力満点のアクロバット。意気込みコメントがここに入ります。')">
                     <div class="role-name">セール / アクロバット</div>
                     <div class="actor-name">夏山　拓実</div>
                 </div>
 
                 <!-- キャスト34 -->
-                <div class="cast-item">
+                <div class="cast-item" onclick="openCastModal('avatar34.jpg', 'シュヴァル / アクロバット', '松田　拓斗', '舞台狭しと俊敏に駆け回り、跳びはねる驚異のアクロバット。意気込みコメントがここに入ります。')">
                     <div class="role-name">シュヴァル / アクロバット</div>
                     <div class="actor-name">松田　拓斗</div>
                 </div>
 
             </div>
         </section>
+
+        <!-- ==========================================================================
+           モーダルポップアップウィンドウ本体
+           ========================================================================== -->
+        <div class="modal-overlay" id="cast-modal" onclick="closeCastModal(event)">
+            <div class="modal-card">
+                <!-- 閉じるボタン -->
+                <button class="modal-close-btn" onclick="closeCastModal(event)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                
+                <!-- 画像表示部 -->
+                <div class="modal-photo-wrapper">
+                    <img class="modal-photo" id="modal-img" src="" alt="" onerror="this.style.display='none';">
+                    <!-- 写真がない場合のプレースホルダー（最高の劇中写真を表示） -->
+                    <div class="modal-placeholder" id="modal-placeholder">
+                        <i class="fa-solid fa-masks-theater"></i>
+                        <span>PREVIEW STAGE</span>
+                    </div>
+                </div>
+                
+                <!-- テキスト部 -->
+                <div class="modal-info">
+                    <div class="modal-role" id="modal-role">ROLE</div>
+                    <div class="modal-actor" id="modal-actor">ACTOR NAME</div>
+                    <!-- 一言メッセージ紹介文 -->
+                    <div class="modal-description" id="modal-desc">キャストメッセージがここに入ります。</div>
+                </div>
+            </div>
+        </div>
 
         <!-- 公演情報（Info & Access） -->
         <section id="info">
@@ -994,9 +1222,9 @@
                     <h3>テアトルチャイカ</h3>
                     <p>校内1階にある、演劇科の本格的な発表用ステージです。非日常的な空間で、私たちの3年間の集大成をお楽しみください。</p>
                     
-                    <!-- マップエリア -->
-                     <div class="map-container">
-                         <iframe src="https://maps.google.com/maps?output=embed&q=大阪府立咲くやこの花高等学校&z=17" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <!-- 本物のGoogleマップ埋め込みエリア -->
+                    <div class="map-container">
+                        <iframe src="https://maps.google.com/maps?output=embed&q=大阪府立咲くやこの花高等学校&z=17" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
 
@@ -1017,7 +1245,7 @@
     </footer>
 
     <!-- ==========================================================================
-       JavaScript制御：一回限りの超スムーズカーテン開閉 ＆ ハンバーガーメニュー
+       JavaScript制御：一回限りの超スムーズカーテン開閉 ＆ ハンバーガーメニュー ＆ モーダルウィンドウ
        ========================================================================== -->
     <script>
         // ページ読み込み時に最上部に強制スクロール
@@ -1073,6 +1301,53 @@
         function closeMenu() {
             menuToggle.classList.remove('active');
             navMenu.classList.remove('active');
+        }
+
+
+        // ==========================================
+        // 3. キャスト写真モーダル（ポップアップ窓）の開閉制御
+        // ==========================================
+        const modal = document.getElementById('cast-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalPlaceholder = document.getElementById('modal-placeholder');
+        const modalRole = document.getElementById('modal-role');
+        const modalActor = document.getElementById('modal-actor');
+        const modalDesc = document.getElementById('modal-desc'); // メッセージ記述部
+
+        // モーダルを開く関数
+        function openCastModal(photoUrl, roleName, actorName, descriptionText) {
+            // 各テキスト（新設された紹介文含む）をセット
+            modalRole.innerText = roleName;
+            modalActor.innerText = actorName;
+            modalDesc.innerText = descriptionText || "紹介文は現在準備中です。どうぞお楽しみに！";
+            
+            // 画像のセットとプレースホルダーの初期表示設定
+            modalImg.src = photoUrl;
+            modalImg.style.display = 'block'; 
+            modalPlaceholder.style.display = 'none'; 
+
+            // 画像の読み込みに失敗した場合、onerrorイベントで劇中ステージ写真（image.png）に差し替える
+            modalImg.onerror = function() {
+                this.style.display = 'none';
+                modalPlaceholder.style.display = 'flex';
+            };
+
+            // モーダルをふわっと表示し、背後のスクロールをロック
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // モーダルを閉じる関数
+        function closeCastModal(event) {
+            // バツボタン、またはカード以外の真っ黒な背景部分をクリックした時だけ閉じる
+            if (event.target === modal || event.currentTarget.classList.contains('modal-close-btn') || event.target.closest('.modal-close-btn')) {
+                modal.classList.remove('active');
+                
+                // モーダルが完全に消える頃に背後のスクロールロックを解除
+                setTimeout(() => {
+                    document.body.style.overflow = '';
+                }, 850); // アニメーション速度延長に合わせて、ロック解除のウェイトも調整
+            }
         }
     </script>
 </body>
