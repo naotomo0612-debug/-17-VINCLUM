@@ -359,7 +359,7 @@
         /* 「VINCLUM」の各文字（span）：金色（var(--accent-gold)） */
         .hero h1 span {
             display: inline-block;
-            color: var(--accent-gold);
+            color: var(--accent-gold); !important;
             text-shadow: 0 0 20px rgba(var(--accent-gold-rgb), 0.8), 0 4px 10px rgba(0, 0, 0, 0.9);
             opacity: 0;
             transform: translateY(-120px);
@@ -422,17 +422,18 @@
         body.curtain-opened .hero h1 span:nth-child(5) { transition-delay: 1.5s; }
         body.curtain-opened .hero h1 span:nth-child(6) { transition-delay: 1.6s; }
         body.curtain-opened .hero h1 span:nth-child(7) { transition-delay: 1.7s; }
+        body.curtain-opened .hero h1 span:nth-child(8) { transition-delay: 1.7s; }
 
         body.curtain-opened .hero p.catchphrase {
             opacity: 1;
             transform: translateY(0);
-            transition-delay: 1.9s;
+            transition-delay: 2.0s;
         }
 
         body.curtain-opened .hero .play-date {
             opacity: 1;
             transform: translateY(0);
-            transition-delay: 2.1s;
+            transition-delay: 2.2s;
         }
 
         /* 各セクション共通 */
@@ -886,16 +887,16 @@
         
         <div class="curtain-emblem" id="emblem-container">
             <div class="emblem-border">
-                <h2>VINCLUM</h2>
+                <h2>VINCULUM</h2>
             </div>
-        </div>
+        </div>U
     </div>
 
     <!-- ==========================================================================
        ヘッダー＆カスタムナビゲーション
        ========================================================================== -->
     <header>
-        <div class="logo">VINCLUM</div>
+        <div class="logo">VINCULUM</div>
         <button class="menu-toggle" id="menu-toggle-btn" aria-label="メニューを開く">
             <span class="menu-bar bar1"></span>
             <span class="menu-bar bar2"></span>
@@ -923,7 +924,7 @@
             <h3>Graduation Performance</h3>
             <!-- 一文字ずつspanで分割して配置します -->
             <h1>
-                <span>V</span><span>I</span><span>N</span><span>C</span><span>L</span><span>U</span><span>M</span>
+                <span>V</span><span>I</span><span>N</span><span>C</span><span>U</span><span>L</span><span>U</span><span>M</span>
             </h1>
             <p class="catchphrase">咲くやこの花高校 演劇科 17期生<br>卒業公演</p>
             <div class="play-date">2026.06.20 - 06.21</div>
@@ -931,13 +932,14 @@
 
         <!-- あらすじ（Synopsis） -->
         <section id="synopsis">
-            <h2 class="section-title">STORY</h2>
+            <h2 class="section-title">Program</h2>
             <div class="synopsis-container">
                 <div class="synopsis-quote">
-                    「ようこそ、誰も見たことのない奇妙な夜会へ。」
+                    「ようこそ我らのサーカス＿＿＿＿へ！」
                 </div>
                 <div class="synopsis-text">
-                    <p>俺らって仲間なんだよな。何を書くかは相談する。</p>
+                    <p>２つのサーカスのとある１小節。各々が抱えてきた荷物を、貴方はこれから覗くことになるでしょう。<br>輝かしい希望と夢に満ちあふれたサーカス。その固い結び目がほどけるとき、貴方が目にするものとは
+                    。。</p>
                 </div>
             </div>
         </section>
@@ -949,140 +951,140 @@
             <div class="cast-grid">
                 
                 <!-- キャスト1 -->
-                <div class="cast-item" onclick="openCastModal('ヌラ.jpg', 'ヌラ / 団長', '牧口　かなで', 'Spes Circusを率いる、圧倒的なカリスマを持つ団長。卒業公演への意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ヌラ.jpg', 'ヌラ / 団長', '牧口　かなで', '  ')">
                     <div class="role-name">ヌラ / 団長</div>
                     <div class="actor-name">牧口　かなで</div>
                 </div>
 
                 <!-- キャスト2 -->
-                <div class="cast-item" onclick="openCastModal('写真/クラウン.jpg', 'クラウン / ピエロ', '赤木　ゆりみ', '観客を笑顔にする、Spes Circusの愛されピエロ。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/クラウン.jpg', 'クラウン / ピエロ', '赤木　ゆりみ', '  ')">
                     <div class="role-name">クラウン / ピエロ</div>
                     <div class="actor-name">赤木　ゆりみ</div>
                 </div>
 
                 <!-- キャスト3 -->
-                <div class="cast-item" onclick="openCastModal('写真/プーパ.jpg', 'プーパ / 人形遣い', '影山　苺', '怪しげな人形で観客を魅了する人形遣い。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/プーパ.jpg', 'プーパ / 人形遣い', '影山　苺', '   ')">
                     <div class="role-name">プーパ / 人形遣い</div>
                     <div class="actor-name">影山　苺</div>
                 </div>
 
                 <!-- キャスト4 -->
-                <!-- 「曾我 響」さんの「曾」を美しい独自の異体字に強制するためのspan指定 -->
-                <div class="cast-item" onclick="openCastModal('写真/ムジカ.jpg', 'ムジカ / 音楽家', '曾我　響', 'サーカスの空間を怪しく美しく染め上げる音楽家。意気込みコメントがここに入ります。')">
+                <!-- 「曾我 響」さんの「曾」を美しい独自の異体字に強制するためのspan指定 --
+                <div class="cast-item" onclick="openCastModal('写真/ムジカ.jpg', 'ムジカ / 音楽家', '曾我　響', '     ')">
                     <div class="role-name">ムジカ / 音楽家</div>
                     <div class="actor-name"><span class="taiwan-kanji">曾</span>我　響</div>
                 </div>
 
                 <!-- キャスト5 -->
-                <div class="cast-item" onclick="openCastModal('写真/アルビデル.jpg', 'アルビテル / 支配人', '土田　梨華', 'サーカスの夜会を裏でコントロールする謎の支配人。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/アルビデル.jpg', 'アルビテル / 支配人', '土田　梨華', '   ')">
                     <div class="role-name">アルビテル / 支配人</div>
                     <div class="actor-name">土田　梨華</div>
                 </div>
 
                 <!-- キャスト6 -->
-                <div class="cast-item" onclick="openCastModal('写真/ゼノ.jpg', 'ゼノ / 演出家', '吉田　鈴琴', 'サーカスの劇的な瞬間を演出し、美しく形作る存在。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ゼノ.jpg', 'ゼノ / 演出家', '吉田　鈴琴', '   ')">
                     <div class="role-name">ゼノ / 演出家</div>
                     <div class="actor-name">吉田　鈴琴</div>
                 </div>
 
                 <!-- キャスト7 -->
-                <div class="cast-item" onclick="openCastModal('写真/エニグマ.jpg', 'エニグマ / 舞台監督', '別所　美紀', '舞台裏のすべてを握り、この空間を支える舞台監督。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/エニグマ.jpg', 'エニグマ / 舞台監督', '別所　美紀', '    ')">
                     <div class="role-name">エニグマ / 舞台監督</div>
                     <div class="actor-name">別所　美紀</div>
                 </div>
 
                 <!-- キャスト8 -->
-                <div class="cast-item" onclick="openCastModal('写真/アビッツ.jpg', 'アビッツ / 舞台美術', '松下　華子', 'サーカスの妖しくも華やかな美術世界を創り出す。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/アビッツ.jpg', 'アビッツ / 舞台美術', '松下　華子', '      ')">
                     <div class="role-name">アビッツ / 舞台美術</div>
                     <div class="actor-name">松下　華子</div>
                 </div>
 
                 <!-- キャスト9 -->
-                <div class="cast-item" onclick="openCastModal('写真/イグニス.jpg', 'イグニス / 炎使い', '石野　ちゃこ', '暗闇に強烈な炎を灯し、夜会を盛り上げる炎使い。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/イグニス.jpg', 'イグニス / 炎使い', '石野　ちゃこ', '    ')">
                     <div class="role-name">イグニス / 炎使い</div>
                     <div class="actor-name">石野　ちゃこ</div>
                 </div>
 
                 <!-- キャスト10 -->
-                <div class="cast-item" onclick="openCastModal('写真/カルミナ.jpg', 'カルミナ / 歌姫', '渡瀨　理愛', 'サーカステントいっぱいに美しい声を響かせる歌姫。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/カルミナ.jpg', 'カルミナ / 歌姫', '渡瀨　理愛', '     ')">
                     <div class="role-name">カルミナ / 歌姫</div>
                     <div class="actor-name">渡瀨　理愛</div>
                 </div>
 
                 <!-- キャスト11 -->
-                <div class="cast-item" onclick="openCastModal('写真/ステラ.jpg', 'ステラ / バレエダンサー', '宮本　佳凜', '光の中をしなやかに舞う、Spesの美しいダンサー。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ステラ.jpg', 'ステラ / バレエダンサー', '宮本　佳凜', '     ')">
                     <div class="role-name">ステラ / バレエダンサー</div>
                     <div class="actor-name">宮本　佳凜</div>
                 </div>
 
                 <!-- キャスト12 -->
-                <div class="cast-item" onclick="openCastModal('写真/ルナ.jpg', 'ルナ / バレエダンサー', '竹田　実央', '月の光に導かれるように、優雅な軌跡を描くダンサー。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ルナ.jpg', 'ルナ / バレエダンサー', '竹田　実央', '     ')">
                     <div class="role-name">ルナ / バレエダンサー</div>
                     <div class="actor-name">竹田　実央</div>
                 </div>
 
                 <!-- キャスト13 -->
-                <div class="cast-item" onclick="openCastModal('写真/ソキウス.jpg', 'ソキウス / 空中ブランコ', '大西　夏希', '高所で観客をハラハラとさせ、大空を飛ぶ空中ブランコ。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ソキウス.jpg', 'ソキウス / 空中ブランコ', '大西　夏希', '     ')">
                     <div class="role-name">ソキウス / 空中ブランコ</div>
                     <div class="actor-name">大西　夏希</div>
                 </div>
 
                 <!-- キャスト14 -->
-                <div class="cast-item" onclick="openCastModal('写真/イーオン.jpg', 'イーオン / アクロバティック', '城戸﨑　尚智', '重力に逆らうようにダイナミックに跳ねるアクロバット。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/イーオン.jpg', 'イーオン / アクロバティック', '城戸﨑　尚智', '       ')">
                     <div class="role-name">イーオン / アクロバティック</div>
                     <div class="actor-name">城戸﨑　尚智</div>
                 </div>
 
                 <!-- キャスト15 -->
-                <div class="cast-item" onclick="openCastModal('写真/サーナ.jpg', 'サーナ / アクロバティック', '成川　愛來', 'しなやかな身体表現で観客の視線を釘付けにする。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/サーナ.jpg', 'サーナ / アクロバティック', '成川　愛來', '      ')">
                     <div class="role-name">サーナ / アクロバティック</div>
                     <div class="actor-name">成川　愛來</div>
                 </div>
 
                 <!-- キャスト16 -->
-                <div class="cast-item" onclick="openCastModal('写真/ファトゥム.jpg', 'ファトゥム / 手品師', '浅田　和奏', '不可能性を現実に変え、夜会に驚きをもたらす手品師。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ファトゥム.jpg', 'ファトゥム / 手品師', '浅田　和奏', '    ')">
                     <div class="role-name">ファトゥム / 手品師</div>
                     <div class="actor-name">浅田　和奏</div>
                 </div>
 
                 <!-- キャスト17 -->
-                <div class="cast-item" onclick="openCastModal('写真/テネル.jpg', 'テネル / ジャグラー', '利川　悠衣', '複数の道具を完璧に操る、リズム感あふれるジャグラー。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/テネル.jpg', 'テネル / ジャグラー', '利川　悠衣', '   ')">
                     <div class="role-name">テネル / ジャグラー</div>
                     <div class="actor-name">利川　悠衣</div>
                 </div>
 
                 <!-- キャスト18 -->
-                <div class="cast-item" onclick="openCastModal('写真/パッシオ.jpg', 'パッシオ / 猛獣使い', '森本　舞', '猛獣をも手なずけ、強さと美しさを見せる。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/パッシオ.jpg', 'パッシオ / 猛獣使い', '森本　舞', '   ')">
                     <div class="role-name">パッシオ / 猛獣使い</div>
                     <div class="actor-name">森本　舞</div>
                 </div>
 
                 <!-- キャスト19 -->
-                <div class="cast-item" onclick="openCastModal('写真/ミムス.jpg', 'ミムス / ピエロ', '西村　あずさ', '滑稽な動きの裏に、どこか怪しさを秘めた道化。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ミムス.jpg', 'ミムス / ピエロ', '西村　あずさ', '    ')">
                     <div class="role-name">ミムス / ピエロ</div>
                     <div class="actor-name">西村　あずさ</div>
                 </div>
 
                 <!-- キャスト20 -->
-                <div class="cast-item" onclick="openCastModal('写真/ネクサス.jpg', 'ネクサス / パントマイム', '月足　美羽', '言葉を発さず、静寂の中に壁と物語を構築する。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ネクサス.jpg', 'ネクサス / パントマイム', '月足　美羽', '      ')">
                     <div class="role-name">ネクサス / パントマイム</div>
                     <div class="actor-name">月足　美羽</div>
                 </div>
 
                 <!-- キャスト21 -->
-                <div class="cast-item" onclick="openCastModal('写真/フロース.jpg', 'フロース / ジャグラー', '中耒田　夢花', '花が舞うように鮮やかに技を決めるジャグラー。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/フロース.jpg', 'フロース / ジャグラー', '中耒田　夢花', '      ')">
                     <div class="role-name">フロース / ジャグラー</div>
                     <div class="actor-name">中耒田　夢花</div>
                 </div>
 
                 <!-- キャスト22 -->
-                <div class="cast-item" onclick="openCastModal('写真/マレ.jpg', 'マレ / トランポリン', '柴坂　香胡', '高く高く跳躍し、大空に新たな軌道を描くトランポリン。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/マレ.jpg', 'マレ / トランポリン', '柴坂　香胡', '      ')">
                     <div class="role-name">マレ / トランポリン</div>
                     <div class="actor-name">柴坂　香胡</div>
                 </div>
 
                 <!-- キャスト23 -->
-                <div class="cast-item" onclick="openCastModal('写真/アルカディア.jpg', 'アルカディア / 一輪車乗り', '南　翼', '危ういバランスを美しく保ちながら、一輪車で舞台を駆け抜ける。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/アルカディア.jpg', 'アルカディア / 一輪車乗り', '南　翼', '      ')">
                     <div class="role-name">アルカディア / 一輪車乗り</div>
                     <div class="actor-name">南　翼</div>
                 </div>
@@ -1093,67 +1095,67 @@
             <div class="cast-grid">
 
                 <!-- キャスト24 -->
-                <div class="cast-item" onclick="openCastModal('avatar24.jpg', 'オリジン / 団長', '桝井　佑人', 'Rever Circusの個性豊かな団員をまとめる熱き若き団長。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/オリジン.jpg', 'オリジン / 団長', '桝井　佑人', '      ')">
                     <div class="role-name">オリジン / 団長</div>
                     <div class="actor-name">桝井　佑人</div>
                 </div>
 
                 <!-- キャスト25 -->
-                <div class="cast-item" onclick="openCastModal('avatar25.jpg', 'クロノス / 副団長', '中田　華帆', '時の流れのように正確な指揮で、団を支える副団長。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/クロノス.jpg', 'クロノス / 副団長', '中田　華帆', '       ')">
                     <div class="role-name">クロノス / 副団長</div>
                     <div class="actor-name">中田　華帆</div>
                 </div>
 
                 <!-- キャスト26 -->
-                <div class="cast-item" onclick="openCastModal('avatar26.jpg', 'オネット / 脱出技師', '井尻　灯李', 'あらゆる束縛を軽やかにすり抜け、観客を沸かせる脱出技師。意気込みコメントがここに入ります。')">
+                 <div class="cast-item" onclick="openCastModal('写真/オネット.jpg', 'オネット / 脱出技術使', '井尻　灯李', '      ')">
                     <div class="role-name">オネット / 脱出技師</div>
                     <div class="actor-name">井尻　灯李</div>
                 </div>
 
                 <!-- キャスト27 -->
-                <div class="cast-item" onclick="openCastModal('avatar27.jpg', 'クロア / バレエダンサー', '穂積　優', '影と光を織り交ぜるように、美しくステップを刻む。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/クロア.jpg', 'クロア / バレエダンサー', '穂積　優', '    ')">
                     <div class="role-name">クロア / バレエダンサー</div>
                     <div class="actor-name">穂積　優</div>
                 </div>
 
                 <!-- キャスト28 -->
-                <div class="cast-item" onclick="openCastModal('avatar28.jpg', 'ノアール / パントマイム', '荒木　明日香', '漆黒の夜のパントマイムで、観客を幻惑の世界へと導く。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ノアール.jpg', 'ノアール / パントマイム', '荒木　明日香', '   ')">
                     <div class="role-name">ノアール / パントマイム</div>
                     <div class="actor-name">荒木　明日香</div>
                 </div>
 
                 <!-- キャスト29 -->
-                <div class="cast-item" onclick="openCastModal('avatar29.jpg', 'ラルム / リボンダンス', '佐々木　もえ', 'リボンのなめらかな軌道で、涙のように美しい空間を創る。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ラルム.jpg', 'ラルム / リボンダンス', '佐々木　もえ', '    ')">
                     <div class="role-name">ラルム / リボンダンス</div>
                     <div class="actor-name">佐々木　もえ</div>
                 </div>
 
                 <!-- キャスト30 -->
-                <div class="cast-item" onclick="openCastModal('avatar30.jpg', 'アンジュ / 空中ブランコ', '谷口　愛莉', 'まるで天使が羽ばたくように、優雅に空中を飛ぶ。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/アンジュ.jpg', 'アンジュ / 空中ブランコ', '谷口　愛莉', '')">
                     <div class="role-name">アンジュ / 空中ブランコ</div>
                     <div class="actor-name">谷口　愛莉</div>
                 </div>
 
                 <!-- キャスト31 -->
-                <div class="cast-item" onclick="openCastModal('avatar31.jpg', 'パピヨン / 歌姫', '藤山　月音', '蝶が舞うように可憐で、美しいハイトーンを響かせる歌姫。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/パピヨン.jpg', 'パピヨン / 歌姫', '藤山　月音', '')">
                     <div class="role-name">パピヨン / 歌姫</div>
                     <div class="actor-name">藤山　月音</div>
                 </div>
 
                 <!-- キャスト32 -->
-                <div class="cast-item" onclick="openCastModal('avatar32.jpg', 'ロゼ / シャボン玉師', '丹下　るり', 'はかなくも美しいシャボン玉で、幻のような世界を作り上げる。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/ロゼ.jpg', 'ロゼ / シャボン玉師', '丹下　るり', '')">
                     <div class="role-name">ロゼ / シャボン玉師</div>
                     <div class="actor-name">丹下　るり</div>
                 </div>
 
                 <!-- キャスト33 -->
-                <div class="cast-item" onclick="openCastModal('avatar33.jpg', 'セール / アクロバット', '夏山　拓実', '力強さとスピード感にあふれた、迫力満点のアクロバット。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('写真/セール.jpg', 'セール / アクロバット', '夏山　拓実', '')">
                     <div class="role-name">セール / アクロバット</div>
                     <div class="actor-name">夏山　拓実</div>
                 </div>
 
                 <!-- キャスト34 -->
-                <div class="cast-item" onclick="openCastModal('avatar34.jpg', 'シュヴァル / アクロバット', '松田　拓斗', '舞台狭しと俊敏に駆け回り、跳びはねる驚異のアクロバット。意気込みコメントがここに入ります。')">
+                <div class="cast-item" onclick="openCastModal('.写真/シュヴァル.jpg', 'シュヴァル / アクロバット', '松田　拓斗', '')">
                     <div class="role-name">シュヴァル / アクロバット</div>
                     <div class="actor-name">松田　拓斗</div>
                 </div>
@@ -1237,7 +1239,7 @@
        フッター
        ========================================================================== -->
     <footer>
-        <div class="footer-logo">VINCLUM</div>
+        <div class="footer-logo">VINCULUM</div>
         <p>咲くやこの花高校 演劇科 17期生 卒業公演</p>
         <div class="footer-credit">
             &copy; 2026 Sakuya Konohana High School Drama Dept. 17th. All Rights Reserved.
